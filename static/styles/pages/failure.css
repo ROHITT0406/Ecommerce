@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff6f6;
+    margin: 0;
+    padding: 0;
+}
+.failure-container {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #fdeaea;
+    border: 2px solid #e74c3c;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.failure-container h1 {
+    color: #e74c3c;
+    font-size: 32px;
+}
+.failure-container p {
+    font-size: 16px;
+    color: #333;
+    margin: 15px 0;
+}
+.session-id {
+    font-family: monospace;
+    background-color: #fff0f0;
+    padding: 10px;
+    margin: 20px 0;
+    border-radius: 6px;
+    color: #444;
+}
+.button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+.button:hover {
+    background-color: #c0392b;
+}

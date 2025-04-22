@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <title>Checkout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'images/amazon-mobile-logo.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'styles/shared/general.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/pages/checkout/checkout-header.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/pages/checkout/checkout.css' %}">
+  </head>
+  <body>
+    <div class="checkout-header">
+      <div class="header-content">
+        <div class="checkout-header-left-section">
+          <a href="{% url 'home' %}">
+            <img class="logo" src="{% static 'images/amazon-logo.png' %}" />
+            <img class="mobile-logo" src="{% static 'images/amazon-mobile-logo.png' %}" />
+          </a>
+        </div>
+        <div class="checkout-header-middle-section">
+          Checkout (<a class="return-to-home-link" href="{% url 'home' %}">{{ cart_quantity }} items</a>)
+        </div>
+        <div class="checkout-header-right-section">
+          <img src="{% static 'images/icons/checkout-lock-icon.png' %}" />
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-page">
+      <div class="page-title">Review your order</div>
+      {% if cart_item %}
+      <div class="checkout-grid">
+        <div class="order-summary">
+          {% for item in cart_item %}
+          <div class="cart-item-container">
+            <div class="delivery-date">Delivery date: {{ item.delivery_date|date:"F j, Y" }}</div>
+            <div class="cart-item-details-grid">
+              <img class="product-image" src="{{ item.product.product_img.url }}" />
+              <div class="cart-item-details">
+                <div class="product-name">{{ item.product.product_name }}</div>
+                <div class="product-price">${{ item.product.product_price }}</div>
+                <div class="product-quantity">
+                  Quantity: <span class="quantity-label">{{ item.quantity }}</span>
+                  <div class="product-actions">
+                    {% if item.quantity > 1 %}
+                    <form method="POST" action="{% url 'update' item.product.id 'decrement' %}" style="display:inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="update-button">-</button>
+                    </form>
+                    {% endif %}
+                   
+                    <span class="quantity-display">{{ item.quantity }}</span>
+                    <form method="POST" action="{% url 'update' item.product.id 'increment' %}" style="display:inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="update-button">+</button>
+                    </form>
+                    <a href="{% url 'delete' item.product.id %}" class="delete-link">Remove</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-cart-container">
+          <div class="empty-cart-message">Your cart is empty.</div>
+          <a href="{% url 'home' %}">
+            <button class="empty-cart-button">Browse Products</button>
+          </a>
+        </div>
+        {% endif %}
+
+        <div class="payment-summary">
+          <div class="payment-summary-title">Payment Summary</div>
+          <div class="payment-summary-row">
+            <div>Items ({{ cart_quantity }}):</div>
+            <div class="payment-summary-money">${{ total_price|floatformat:2 }}</div>
+          </div>
+          <div class="payment-summary-row">
+            <div>Shipping &amp; handling:</div>
+            <div class="payment-summary-money">${{ shipping_cost }}</div>
+          </div>
+          <div class="payment-summary-row subtotal-row">
+            <div>Total before tax:</div>
+            <div class="payment-summary-money">${{ total_before_tax|floatformat:2 }}</div>
+          </div>
+          <div class="payment-summary-row">
+            <div>Estimated tax (10%):</div>
+            <div class="payment-summary-money">${{ estimated_tax|floatformat:2 }}</div>
+          </div>
+          <div class="payment-summary-row total-row">
+            <div>Order total:</div>
+            <div class="payment-summary-money">${{ total_amount|floatformat:2 }}</div>
+          </div>
+
+          {% if cart_item and address %}
+            <button id="pay-btn" class="place-order-button button-primary">Place Order</button>
+          {% elif not address %}
+            <button disabled class="place-order-button button-primary" style="opacity: 0.7;" title="Please add your address first">
+              Place your order
+            </button>
+            <p style="color: red;">No address found. <a style="text-decoration:none; color: #4158d0;" href="{% url 'address' %}">Add Address</a></p>
+          {% else %}
+            <button disabled class="place-order-button button-primary" style="opacity: 0.7;" title="Your cart is empty">
+              Place your order
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
+    {% if cart_item and address %}
+    <script>
+      const stripe = Stripe('{{ stripe_publishable_key }}');
+      const payBtn = document.getElementById("pay-btn");
+
+      payBtn.addEventListener("click", function () {
+        stripe.redirectToCheckout({
+          sessionId: "{{ stripe_session_id }}"
+        }).then(function (result) {
+          if (result.error) {
+            alert(result.error.message);
+          }
+        });
+      });
+    </script>
+    {% endif %}
+  </body>
+</html>

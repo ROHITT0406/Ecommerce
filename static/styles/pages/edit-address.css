@@ -1,0 +1,180 @@
+*{
+    font-family: Poppins,sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+  }
+  html,body{
+    display: grid;
+    place-items: center;
+    height: 100%;
+    background-color: #f2f2f2;
+  }
+  .wrapper{
+    width: 380px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+  }
+  .wrapper .title{
+    line-height: 100px  ;
+    background-color: #9CA3AF;
+    font-size: 35px;
+    border-radius: 15px 15px 0px 0px;
+    color:#000;
+    text-align: center;
+    font-weight: 700;
+    
+  }
+  .wrapper form{
+    padding:  10px 30px 50px 30px;
+  
+  }
+  .wrapper form .field{
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+    position: relative;
+  }
+  .wrapper form .field input{
+    height: 100%;
+    width: 100%;
+    padding-left: 20px;
+    border-radius: 25px;
+    outline: none;
+    border: 1px solid lightgrey;
+    transition: all 0.3s ease;
+    font-size: 17px;
+  }
+  .wrapper form .field input:focus,
+  .wrapper form .field input:valid{
+  
+    border-color: #4158d0;
+    
+  }
+  .wrapper form .field label{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 20px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    font-size: 17px;
+    color: #999;
+  }
+  .wrapper form .field input:focus ~ label,
+  .wrapper form .field input:valid ~ label{
+    top: 0;
+    transform: translateY(-50%);
+    font-size: 16px;
+    background-color: #fff;
+    color: #4158d0;
+  }
+  .wrapper form .pass-link
+    {
+  color: #4158d0;
+    margin: 8px 0 0 10px ;
+    display: inline-block;
+  }
+  .wrapper form .signup-link{
+    color: #4158d0;
+    text-align: center;
+    margin-top: 20px;
+    color: #262626;
+  }
+  .wrapper form .signup-link a,.wrapper form .pass-link a{
+    color: #4158d0;
+    text-decoration: none;
+  }
+  .wrapper form .signup-link a:hover,.wrapper form .pass-link a:hover{
+    text-decoration: underline;
+  }
+  .wrapper form .field input[type="submit"]{
+    color:#000;
+    background-color: #9CA3AF;
+    font-size: 18px;
+    font-weight: 500;
+    padding-left: 0px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s  ease;
+  }
+  .wrapper form .field input[type="submit"]:active{
+    transform: scale(0.95);
+  }
+  
+  .wrapper form .remember{
+    display: inline-block;  
+    margin: 13px 0 0 15px ;
+  }
+  .home-link {
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+    margin-bottom: -40px;
+  }
+  
+  .home-link a{
+    text-decoration: none;
+    font-size: 18px;
+    color: #4158d0;
+  }
+  /* .home-link a:hover{
+    text-decoration: underline;
+  } */
+  /* Alert Styling */
+  .custom-alert {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    position: relative;
+    font-size: 16px;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Alert Types */
+  .custom-alert-success {
+    background-color: #2e7d32; /* Dark Green */
+    color: white;
+    border-color: #1b5e20;
+  }
+  
+  .custom-alert-warning {
+    background-color: #ff9800; /* Orange */
+    color: white;
+    border-color: #e65100;
+  }
+  
+  .custom-alert-danger {
+    background-color: #d32f2f; /* Dark Red */
+    color: white;
+    border-color: #b71c1c;
+  }
+  
+  /* Close Button */
+  .custom-alert .close-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  /* Fade-out Animation */
+  .custom-alert.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
+  .title .logo {
+  
+    height: 45px;
+    margin-top: 20px;
+  }

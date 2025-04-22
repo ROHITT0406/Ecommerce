@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Profile</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="{% static 'images/amazon-mobile-logo.png' %}" type="image/png">
+  <link rel="stylesheet" href="{% static 'styles/pages/profile.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/shared/general.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/shared/header.css' %}">
+  
+</head>
+<body>
+
+  <!-- Header Section -->
+  <div class="header" style="display:flex; flex-direction:row;">
+    <div class="left-section">
+      <a href="{% url 'home' %}" class="header-link">
+        <img class="logo" src="{% static 'images/amazon-logo-white.png' %}" />
+        <img class="mobile-logo" src="{% static 'images/amazon-mobile-logo-white.png' %}" />
+      </a>
+    </div>
+    <div class="middle-section" style="text-align:center; margin-top:7px;">
+      <form method="GET" action="{% url 'home' %}">
+        <input class="search-bar" type="text" placeholder="Search" name="search" />
+        <button class="search-button" type="submit">
+          <img class="search-icon" src="{% static 'images/icons/search-icon.png' %}" />
+        </button>
+      </form>
+    </div>
+    <div class="right-section">
+      <a class="orders-link header-link" href="{% url 'home' %}">
+        <span class="orders-text">Home</span>
+      </a>
+      {% comment %} <a class="orders-link header-link" href="{% url 'logout' %}"><span>Logout</span></a> {% endcomment %}
+      <a class="orders-link header-link" href="{% url 'orders' %}">
+        <span class="orders-text">Orders</span>
+      </a>
+      <a class="cart-link header-link" href="{% url 'checkout' %}">
+        <img class="cart-icon" src="{% static 'images/icons/cart-icon.png' %}" />
+        <div class="cart-quantity">{{ cart_quantity }}</div>
+        <div class="cart-text">Cart</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Profile Container -->
+  <div class="profile-container">
+    <h1>Hello, <span>{{ user.first_name }}</span></h1>
+
+   
+    <!-- My Info -->
+    <div class="section">
+      <h2>👤 Personal Information</h2>
+      <div class="info-box">
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Name:</strong> {{ user.first_name }}</p>
+        <p><a href="{% url 'reset-password' %}?next={% url 'profile' %}">Edit Password</a></p>
+      </div>
+    </div>
+
+    
+
+    <!-- Address Section -->
+    <div class="section">
+      <h2>🏠 Address Book</h2>
+      {% if address %}
+        <ul class="address-list">
+          <li>
+            {{ address.full_name }}<br>
+            {{ address.street }}, {{ address.city }}, {{ address.state }} - {{ address.zip_code }}<br>
+            📞 {{ address.phone_number }}<br>
+            <a href="{% url 'edit-address' %}">Edit</a> | <a href="{% url 'remove-address' %}">Remove</a>
+          </li>
+        </ul>
+      {% else %}
+        <p>No address saved. <a href="{% url 'address' %}">Add Address</a></p>
+      {% endif %}
+    </div>
+
+    <!-- Orders Section -->
+    <div class="section">
+      <h2>🧾 My Orders    </h2>
+      <p><a href="{% url 'orders' %}" style="margin-left:27px;">View Order History</a></p>
+    </div>
+
+   
+<div class="section">
+  
+  <form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="logout-button">Logout</button>
+  </form>
+</div>
+
+
+  </div>
+
+</body>
+</html>

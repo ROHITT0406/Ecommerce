@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Failed</title>
+    <link rel="icon" type="image/png" href="{% static 'images/amazon-mobile-logo.png' %}">
+    <link rel="stylesheet" href="{%  static "styles/pages/failure.css"%}">
+</head>
+<body>
+    <div class="failure-container">
+        <h1>Payment Failed</h1>
+        <p>Oops! Something went wrong with your payment. Please try again.</p>
+
+        {% if session_id %}
+        <div class="session-id">
+            Session ID: {{ session_id }}
+        </div>
+        {% endif %}
+
+        <a href="{% url 'checkout' %}" class="button">Go to cart</a>
+    </div>
+</body>
+</html>

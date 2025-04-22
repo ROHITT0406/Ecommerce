@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <title>Orders</title>
+
+    <!-- This code is needed for responsive design to work.
+      (Responsive design = make the website look good on
+      smaller screen sizes like a phone or a tablet). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'images/amazon-mobile-logo.png' %}">
+    <!-- Load a font called Roboto from Google Fonts. -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Here are the CSS files for this page. -->
+    <link rel="stylesheet" href="{%  static "styles/pages/orders.css"%}">
+    <link rel="stylesheet" href="{%  static "styles/shared/general.css"%}">
+    <link rel="stylesheet" href="{%  static "styles/shared/header.css"%}">
+    
+   
+
+  </head>
+  <body>
+   
+    <div class="header">
+      <div class="left-section">
+        <a href={% url "home" %} class="header-link">
+          <img class="logo"
+            src="{%  static "images/amazon-logo-white.png"%}" />
+          <img class="mobile-logo"
+            src="{%  static "images/amazon-mobile-logo-white.png"%}" />
+        </a>
+      </div>
+
+      <div class="middle-section">
+        <form method="GET" action="{% url "home" %}">
+          <input class="search-bar" style="padding:8px !important;" type="text" placeholder="Search"  name="search"/>
+  
+          <button class="search-button" type="submit">
+            <img class="search-icon" src="{%  static "images/icons/search-icon.png"%}" />
+          </button>
+        </form>
+      </div>
+
+      <div class="right-section">
+        <div class="dropdown" style="position: relative; margin-top:7px;">
+          <a class="orders-link header-link dropdown-toggle" href="#" >
+            <span class="orders-text">{{user.first_name}}</span>
+          </a>
+          <div class="dropdown-menu" style="
+              display: none !important;
+              position: absolute !important;
+              top: 100% !important;
+              right: 0 !important;
+              background-color: white !important;
+              min-width: 160px !important;
+              box-shadow: 0px 8px 16px rgba(0,0,0,0.2) !important;
+              z-index: 10 !important;
+              border-radius:4px !important;
+            ">
+            <a href="{% url 'profile' %}" class="dropdown-item" style="display: block !important; padding: 12px 16px !important; color: black !important; text-decoration: none !important; "><i class="fa-solid fa-user" style="margin-right:4px;"></i>View Profile</a>
+            <a href="{% url 'logout' %}" class="dropdown-item" style="display: block !important; padding: 12px 16px !important; color: black !important; text-decoration: none !important;"><i class="fa-solid fa-arrow-right-from-bracket"style="margin-right:4px;" ></i>Logout</a>
+          </div>
+        </div>
+        
+       
+        <a class="orders-link header-link" href='{% url "orders" %}'>
+
+          <span class="orders-text">Orders</span>
+        </a>
+
+        <a class="cart-link header-link" href="{% url "checkout" %}">
+          <img class="cart-icon" src="{%  static "images/icons/cart-icon.png"%}" />
+          <div class="cart-quantity">{{cart_quantity}}</div>
+          <div class="cart-text">Cart</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="orders-page">
+      <div class="page-title">Your Orders</div>
+
+      <div class="orders-grid">
+        {% if grouped_orders %}
+        {% for order_id, order_info in grouped_orders.items %}
+          <div class="order-container">
+            <div class="order-header">
+              <div class="order-header-left-section">
+                <div class="order-date">
+                  <div class="order-header-label">Order Placed:</div>
+                  <div>{{ order_info.order_date|date:"F j, Y" }}</div>
+                </div>
+                <div class="order-total">
+                  <div class="order-header-label">Total Price:</div>
+                  <div>${{ order_info.total_price }}</div>
+                </div>
+              </div>
+  
+              <div class="order-header-right-section">
+                <div class="order-header-label">Order ID:</div>
+                <div>{{ order_id }}</div>
+              </div>
+            </div>
+  
+            {% for item in order_info.items %}
+              <div class="order-details-grid">
+                <div class="product-image-container">
+                  <img src="{{ item.product.product_img.url }}" />
+                </div>
+  
+                <div class="product-details">
+                  <div class="product-name">{{ item.product.product_name }}</div>
+                  {% if not item.is_cancelled %}
+                  <div class="product-delivery-date">Arriving on: {{ item.delivery_date|date:"F j" }}</div>
+                  {% endif %}
+                 
+                  <div class="product-quantity">Quantity: {{ item.quantity }}</div>
+                  
+                  {% if item.is_cancelled %}
+                  <div class="cancelled-label">Status: Cancelled</div>
+                  
+                  {% else %}
+                 
+                  
+                  <div class="align-item">
+                    <form method="POST" action="{% url 'add_to_cart' item.product.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="buy-again-button button-primary">
+                          <img class="buy-again-icon" src="{% static 'images/icons/buy-again.png' %}" />
+                          <span class="buy-again-message">Add to Cart</span>
+                        </button>
+                    </form>
+                    <button type="button" class="btn btn-danger cancel-button" data-bs-toggle="modal" data-bs-target="#cancelConfirmModal-{{ item.id }}">
+                      Cancel Order
+                    </button>
+                    
+                    <!-- Unique Cancel Modal for each item -->
+                    <div class="modal fade" id="cancelConfirmModal-{{ item.id }}" tabindex="-1" aria-labelledby="cancelConfirmModalLabel-{{ item.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <form method="POST" action="{% url 'cancel-order' item.id %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="cancelConfirmModalLabel-{{ item.id }}">Confirm Cancellation</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to cancel this order?
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                              <button type="submit" class="btn btn-danger">Yes, Cancel Order</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                  
+                  
+                </div>
+  
+                <div class="product-actions">
+                  <a href='{% url "tracking" item.id %}'>
+                    <button class="track-package-button button-secondary">Track package</button>
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-cart-container">
+          <div class="empty-cart-message">No orders.</div>
+          <a href="{% url 'home' %}">
+            <button class="empty-cart-button">Browse Products</button>
+          </a>
+        </div>
+      {% endif %}
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      
+    
+        document.addEventListener('DOMContentLoaded', function () {
+          const dropdown = document.querySelector('.dropdown');
+          const menu = dropdown.querySelector('.dropdown-menu');
+      
+          dropdown.addEventListener('mouseenter', () => {
+            menu.style.display = 'block';
+          });
+      
+          dropdown.addEventListener('mouseleave', () => {
+            menu.style.display = 'none';
+          });
+        });
+      
+      
+  </script>
+  </body>
+</html>

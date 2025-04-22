@@ -1,0 +1,234 @@
+.header {
+  background-color: #0f1111;
+  /* background-color: rgb(8, 79, 45); */
+  color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+}
+
+.header .left-section {
+  width: 208px;
+}
+
+@media (max-width: 800px) {
+  .header .left-section {
+    width: unset;
+  }
+}
+
+.header .header-link {
+  display: inline-block;
+  padding: 6px 9.5px;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.header .header-link:hover {
+  border: 1px solid white;
+}
+
+.header .logo {
+  height: 26px;
+  margin-top: 1px;
+}
+
+.header .mobile-logo {
+  display: none;
+}
+
+@media (max-width: 675px) {
+  .header .logo {
+    display: none;
+  }
+
+  .header .mobile-logo {
+    display: block;
+    height: 26px;
+    margin-top: 1px;
+  }
+}
+/* Middle Section Styling */
+.middle-section {
+  flex: 1 !important;
+  max-width: 800px !important;
+  margin-left: 5px !important;
+  margin-right: 2px !important;
+  display: flex !important;
+  justify-content: center !important; /* Centering search form */
+}
+.header form{
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  flex: 1 !important;
+  align-items: center !important;
+}
+
+
+/* Search Bar Styling */
+.search-bar {
+  flex-grow: 1 !important; /* Makes input take up remaining space */
+  padding: 10px !important;
+  border: 1px solid #ddd !important;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  font-size: 16px !important;
+}
+
+/* Search Button Styling */
+.search-button {
+  background-color: #febd68 !important;
+  border: 1px solid #ddd !important;
+  border-left: none !important;
+  width: 45px !important;
+  height: 41px !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  cursor: pointer;
+}
+
+/* Search Icon Styling */
+.search-icon {
+  height: 20px !important;
+}
+
+/* Make it Responsive */
+@media (max-width: 768px) {
+  .header form {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+  .search-bar {
+      font-size: 10px !important;
+  }
+
+  .search-button {
+      width: 30px !important;
+      height: 34px !important;
+  }
+}
+
+.header .right-section {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: end;
+}
+
+.header .orders-link {
+  color: white;
+
+  display: flex;
+  align-items: center;
+  padding-left: 13px;
+  padding-right: 13px;
+}
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: nowrap; /* Keeps items in a single row */
+    padding: 10px;
+  }
+
+  .header .middle-section {
+    flex: 0.6 !important; /* Limits search bar width */
+    min-width: 80px !important;
+    max-width: 40% !important; /* Prevents it from taking too much space */
+  }
+
+  .header  form .search-bar {
+    width: 100% !important;
+  }
+  
+  
+  .header .right-section {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: nowrap;
+    width: auto;
+  }
+
+  .header .right-section a {
+    font-size: 5px; /* Reduce font size */
+    padding: 2px 4px;
+    white-space: nowrap;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px)  { /* Adjusts for Surface Pro and similar screens */
+  .header {
+    flex-wrap: nowrap;
+    padding: 10px;
+  }
+
+  .header .middle-section {
+    flex-grow: 1 !important; 
+    min-width: 200px !important;
+    max-width: 350px !important; /* Limits search bar size */
+  }
+
+  .header form .search-bar {
+    width: 100% !important;
+  }
+
+  .header .right-section {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: 10px;
+    width: auto;
+  }
+
+  .header .right-section a {
+    font-size: 10px; /* Keeps links readable */
+    padding: 3px 6px;
+    white-space: nowrap; /* Prevents text from wrapping */
+  }
+}
+
+.header .orders-text {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.header .cart-link {
+  color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.header .cart-icon {
+  width: 38px;
+}
+
+.header .cart-text {
+  margin-left: 5px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.header .cart-quantity {
+  color: rgb(8, 79, 45);
+  font-size: 14px;
+  font-weight: 700;
+
+  position: absolute;
+  top: 8.5px;
+  right: 46px;
+
+  width: 26px;
+  text-align: center;
+}

@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Success</title>
+    <link rel="icon" type="image/png" href="{% static 'images/amazon-mobile-logo.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/pages/success.css' %}">
+</head>
+<body>
+    <div class="success-container">
+        <h1>🎉 Payment Successful!</h1>
+        <p>Thank you for your order. We have received your payment.</p>
+
+        {% if session_id %}
+        <div class="session-id">
+            Session ID: {{ session_id }}
+        </div>
+        {% endif %}
+
+        <a href="{% url 'orders' %}" class="button">Go to My Orders</a>
+    </div>
+</body>
+</html>
