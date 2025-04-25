@@ -287,7 +287,6 @@ def orders(request):
 
 def place_order(request):
     session_id = request.GET.get('session_id')
-    print(session_id)
     if not session_id:
         messages.error(request, "Session ID missing.")
         return redirect('checkout')
@@ -327,7 +326,7 @@ def place_order(request):
                 order_date=order_date
             )
 
-        # ✅ Save order summary once
+        # Save order summary once
         Orderdetails.objects.create(
             name=user.username,
             amount=total_amount,
@@ -336,14 +335,14 @@ def place_order(request):
             paid=True
         )
 
-        # ✅ Clear cart
+        # Clear cart
         cart_items.delete()
 
-        # messages.success(request, "✅ Payment successful and order placed!")
+        # messages.success(request, " Payment successful and order placed!")
         return redirect('stripe-success')
     
     else:
-        # messages.error(request, "❌ Payment failed.")
+        # messages.error(request, " Payment failed.")
         return redirect('checkout')
 
 def tracking(request,order_id):
